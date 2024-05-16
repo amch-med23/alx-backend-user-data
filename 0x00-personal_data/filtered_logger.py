@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """ a filtered logger module """
 
-#!/usr/bin/env python3
-"""
-Module for handling Personal Data
-"""
+
 from typing import List
 import re
 import logging
