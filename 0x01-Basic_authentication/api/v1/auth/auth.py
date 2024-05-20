@@ -2,7 +2,7 @@
 """" the basic authentication model """
 
 
-from flask import requests
+from flask import request
 from typing import List, TypeVar
 
 
@@ -20,7 +20,7 @@ class Auth:
         if path in excluded_paths:
             return False
 
-        for exclude_path in excluded_paths:
+        for excluded_path in excluded_paths:
             if excluded_path.startswith(path):
                 return False
             elif path.startswith(excluded_path):
@@ -43,6 +43,6 @@ class Auth:
 
         return header
 
-    def current_user(self, request=None) -> typeVar('User'):
+    def current_user(self, request=None) -> TypeVar('User'):
         """ the current authorized (authenticated) user """
         return None
