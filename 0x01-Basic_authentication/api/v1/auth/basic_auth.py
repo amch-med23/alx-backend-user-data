@@ -20,7 +20,7 @@ class BasicAuth(Auth):
         if not authorization_header.startswith('Basic '):
             return None
 
-        token = authorization_header.split(' ')[1:]
+        token = authorization_header.split(' ')[-1]
         return token
 
     def decode_base64_authorization_header(self,
@@ -31,10 +31,9 @@ class BasicAuth(Auth):
             return None
         if not isinstance(base64_authorization_header, str):
             return None
-
         try:
             header_to_decode = base64_authorization_header.encode('utf-8')
-            decode = base64.base64decode(item_to_decode)
+            decoded = base64.b64decode(header_to_decode)
             return decoded.decode('utf-8')
         except Exception:
             return None
