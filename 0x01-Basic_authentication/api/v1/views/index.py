@@ -15,7 +15,6 @@ def status() -> str:
 
 
 @app_views.route('/stats/', strict_slashes=False)
-
 def stats() -> str:
     """ GET /api/v1/stats
     Return:
@@ -26,14 +25,14 @@ def stats() -> str:
     stats['users'] = User.count()
     return jsonify(stats)
 
-@app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 
+@app_views.route('/unauthorized', methods=['GET'], strict_slashes=False)
 def unauthorized() -> str:
     """ the index view for unauthorized route """
     abort(401, description='Unauthorized')
 
-@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
 def forbidden() -> str:
     """ the forbidden route """
     abort(403, description='Forbidden')

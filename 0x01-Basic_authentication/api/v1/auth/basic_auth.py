@@ -7,22 +7,23 @@ from typing import TypeVar
 import base64
 from models.user import User
 
+
 class BasicAuth(Auth):
     """ the basic auth class that inherents from the Auth class """
-
-    def extract_base64_authorization_header(self, 
-            authorization_header: str) -> str:
+    def extract_base64_authorization_header(self,
+                                            authorization_header: str) -> str:
         """ a method to extract the base64 string from the header """
         if authorization_header is None:
             return None
         if not authorization_header.startswith('Basic '):
             return None
 
-        token  = authorization_header.split(' ')[:-1]
+        token = authorization_header.split(' ')[:-1]
         return token
 
-    def decode_base64_authorization_header(self, 
-            base64_authorization_header: str) -> str:
+    def decode_base64_authorization_header(self,
+                                           base64_authorization_header: str
+                                           ) -> str:
         """ a method to decode the base64 string """
         if base64_authorization_header is None:
             return None
@@ -36,8 +37,9 @@ class BasicAuth(Auth):
         except Exception:
             return None
 
-    def extract_user_credentials(self, 
-            decoded_base64_authorization_header: str) -> (str, str):
+    def extract_user_credentials(self,
+                                 decoded_base64_authorization_header: str
+                                 ) -> (str, str):
         """ a method toextract the user credentials from the header """
         if decoded_base64_authorization_header is None:
             return (None, None)
@@ -49,9 +51,9 @@ class BasicAuth(Auth):
         email, password = decoded_base64_authorization_header.split(':')
         return (email, password)
 
-    def user_object_from_credentials(self, user_email: str, 
-            user_password: str) -> TypeVar('User'):
-        """ a method that return a user object from the supplied credentials """
+    def user_object_from_credentials(self, user_email: str,
+                                     user_password: str) -> TypeVar('User'):
+        """ a method to return a user object from the supplied credentials """
         if user_email is None or not isinstance(user_email, str):
             return None
         if user_password is None or not isinstance(user_password, str):
@@ -63,7 +65,7 @@ class BasicAuth(Auth):
             for user in users:
                 if user.is_valid_password(user_password):
                     return user
-            
+
             return None
         except Exception:
             return None
@@ -78,7 +80,7 @@ class BasicAuth(Auth):
                 if decoded is not None:
                     email, password = self.extract_user_credentials(decoded)
                     if email is not None:
-                        return self.user_object_from_credentials(email, 
-                                password)
+                        return self.user_object_from_credentials(email,
+                                                                 password)
 
-        return 
+        return
