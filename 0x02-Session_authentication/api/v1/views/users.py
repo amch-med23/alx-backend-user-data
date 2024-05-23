@@ -27,6 +27,11 @@ def view_one_user(user_id: str = None) -> str:
     """
     if user_id is None:
         abort(404)
+    if user_id == "me":
+        if request.current_user is None:
+            abort(404)
+        user = User.get(user_id)
+        return jsonify(user.to_json())
     user = User.get(user_id)
     if user is None:
         abort(404)
@@ -63,25 +68,25 @@ def create_user() -> str:
       - User object JSON represented
       - 400 if can't create the new User
     """
-    rj = None
+    retreived_json = None
     error_msg = None
     try:
-        rj = request.get_json()
+        retreived_json = request.get_json()
     except Exception as e:
-        rj = None
-    if rj is None:
+        retreived_json = None
+    if retreived_json is None:
         error_msg = "Wrong format"
-    if error_msg is None and rj.get("email", "") == "":
+    if error_msg is None and retreived_json.get("email", "") == "":
         error_msg = "email missing"
-    if error_msg is None and rj.get("password", "") == "":
+    if error_msg is None and retreived_json.get("password", "") == "":
         error_msg = "password missing"
     if error_msg is None:
         try:
             user = User()
-            user.email = rj.get("email")
-            user.password = rj.get("password")
-            user.first_name = rj.get("first_name")
-            user.last_name = rj.get("last_name")
+            user.email = retreived_json.get("email")
+            user.password = retreived_json.get("password")
+            user.first_name = retreived_json.get("first_name")
+            user.last_name = retreived_json.get("last_name")
             user.save()
             return jsonify(user.to_json()), 201
         except Exception as e:
@@ -107,16 +112,16 @@ def update_user(user_id: str = None) -> str:
     user = User.get(user_id)
     if user is None:
         abort(404)
-    rj = None
+    retreived_json = None
     try:
-        rj = request.get_json()
+        retreived_json = request.get_json()
     except Exception as e:
-        rj = None
-    if rj is None:
+        retreived_json = None
+    if retreived_json is None:
         return jsonify({'error': "Wrong format"}), 400
-    if rj.get('first_name') is not None:
-        user.first_name = rj.get('first_name')
-    if rj.get('last_name') is not None:
-        user.last_name = rj.get('last_name')
+    if retreived_json.get('first_name') is not None:
+        user.first_name = retreived_json.get('first_name')
+    if retreived_json.get('last_name') is not None:
+        user.last_name = retreived_json.get('last_name')
     user.save()
     return jsonify(user.to_json()), 200
