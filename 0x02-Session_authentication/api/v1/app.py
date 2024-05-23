@@ -46,7 +46,19 @@ def before_request():
 def not_found(error) -> str:
     """ Not found handler
     """
-    return make_response(jsonify({"error": "Not found"}), 404)
+    return jsonify({"error": "Not found"})
+
+
+@app.errorhandler(401)
+def unauthorized(error) -> str:
+    """ this functionn handles unauthorized requests"""
+    return jsonify({"error": "Unauthorized"})
+
+
+@app.errorhandler(403)
+def forbidden(error) -> str:
+    """ this to handle the forbidden requests """
+    return jsonify({"error": "Forbidden"})
 
 
 if __name__ == "__main__":
@@ -54,14 +66,3 @@ if __name__ == "__main__":
     port = getenv("API_PORT", "5000")
     app.run(host=host, port=port)
 
-
-@app.errorhandler(401)
-def unauthorized(error) -> str:
-    """ this functionn handles unauthorized requests"""
-    return make_response(jsonify({"error": "Unauthorized"}), 401)
-
-
-@app.errorhandler(403)
-def forbidden(error) -> str:
-    """ this to handle the forbidden requests """
-    return make_response(jsonify({"error": "Forbidden"}), 403)
