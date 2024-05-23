@@ -68,25 +68,25 @@ def create_user() -> str:
       - User object JSON represented
       - 400 if can't create the new User
     """
-    retreived_json = None
+    rj = None
     error_msg = None
     try:
-        retreived_json = request.get_json()
+        rj = request.get_json()
     except Exception as e:
-        retreived_json = None
-    if retreived_json is None:
+        rj = None
+    if rj is None:
         error_msg = "Wrong format"
-    if error_msg is None and retreived_json.get("email", "") == "":
+    if error_msg is None and rj.get("email", "") == "":
         error_msg = "email missing"
-    if error_msg is None and retreived_json.get("password", "") == "":
+    if error_msg is None and rj.get("password", "") == "":
         error_msg = "password missing"
     if error_msg is None:
         try:
             user = User()
-            user.email = retreived_json.get("email")
-            user.password = retreived_json.get("password")
-            user.first_name = retreived_json.get("first_name")
-            user.last_name = retreived_json.get("last_name")
+            user.email = rj.get("email")
+            user.password = rj.get("password")
+            user.first_name = rj.get("first_name")
+            user.last_name = rj.get("last_name")
             user.save()
             return jsonify(user.to_json()), 201
         except Exception as e:
@@ -112,16 +112,16 @@ def update_user(user_id: str = None) -> str:
     user = User.get(user_id)
     if user is None:
         abort(404)
-    retreived_json = None
+    rj = None
     try:
-        retreived_json = request.get_json()
+        rj = request.get_json()
     except Exception as e:
-        retreived_json = None
-    if retreived_json is None:
+        rj = None
+    if rj is None:
         return jsonify({'error': "Wrong format"}), 400
-    if retreived_json.get('first_name') is not None:
-        user.first_name = retreived_json.get('first_name')
-    if retreived_json.get('last_name') is not None:
-        user.last_name = retreived_json.get('last_name')
+    if rj.get('first_name') is not None:
+        user.first_name = rj.get('first_name')
+    if rj.get('last_name') is not None:
+        user.last_name = rj.get('last_name')
     user.save()
     return jsonify(user.to_json()), 200
