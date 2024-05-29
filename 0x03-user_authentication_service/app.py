@@ -14,7 +14,7 @@ app = Flask(__name__)
 @app.route('/', methods=['GET'])
 def index() -> str:
     """ the index methode """
-    return jsonify({"message": "Welcome to this flask app."}), 200
+    return jsonify({"message": "Bienvenue"}), 200
 
 
 @app.route('/users', methods=['POST'])
